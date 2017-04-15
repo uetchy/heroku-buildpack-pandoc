@@ -1,0 +1,43 @@
+#!/bin/sh
+
+# prevent script when an error occurs
+set -e
+
+indent() {
+  sed -u 's/^/'
+}
+
+info() {
+  echo "-----> $*"
+}
+
+# environment vars from Heroku
+BUILD_DIR=${1:-}
+CACHE_DIR=${2:-}
+ENV_DIR=${3:-}
+
+# pandoc versions
+RELEASE_VERSION="1.19.2.1"
+RELEASE_URL="https://github.com/jgm/pandoc/releases/download/${RELEASE_VERSION}/pandoc-${RELEASE_VERSION}-1-amd64.deb"
+
+# working directories
+PANDOC_DEB_PATH="$CACHE_DIR/release.deb"
+PANDOC_ROOT="pandoc-bin"
+PANDOC_BUILD_DIR="$BUILD_DIR/$PANDOC_ROOT"
+PANDOC_PROFILE_SCRIPT_PATH="$BUILD_DIR/.profile.d/pandoc-defaults.sh"
+
+
+info "Downloading $RELEASE_URL"
+curl -L $RELEASE_URL -o $PANDOC_DEB_PATH
+
+
+info "Extracting deb to $PANDOC_BUILD_DIR"
+dpkg -x $PANDOC_DEB_PATH $PANDOC_BUILD_DIR
+
+
+info "Exporting bin to PATH"
+mkdir -p $BUILD_DIR/.profile.d
+echo "export PATH=\"\$HOME/$PANDOC_ROOT/usr/bin:\$PATH\"" > $PANDOC_PROFILE_SCRIPT_PATH
+
+
+sh $PANDOC_PROFILE_SCRIPT_PATH

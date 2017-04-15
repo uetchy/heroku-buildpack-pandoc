@@ -1,0 +1,4 @@
+test:
+  build: .
+  dockerfile: ./test/Dockerfile
+  command: cat /build/.profile.d/pandoc-defaults.sh
