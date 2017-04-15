@@ -1,3 +1,4 @@
 #!/bin/sh
 
-exit 1
+echo pandoc
+exit 0
