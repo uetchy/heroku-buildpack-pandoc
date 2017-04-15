@@ -11,3 +11,6 @@ RUN /buildpack/bin/compile /build /cache /env
 # test with sample.tex
 COPY test/sample.tex /build/sample.tex
 RUN /build/pandoc-bin/usr/bin/pandoc /build/sample.tex
+
+RUN ls -al /build/pandoc-bin/usr/bin
+RUN cat /build/.profile.d/pandoc-defaults.sh

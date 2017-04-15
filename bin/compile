@@ -33,10 +33,11 @@ curl -L $RELEASE_URL -o $PANDOC_DEB_PATH
 
 info "Extracting deb to $PANDOC_BUILD_DIR"
 dpkg -x $PANDOC_DEB_PATH $PANDOC_BUILD_DIR
+chmod +x $PANDOC_BUILD_DIR/usr/bin/pandoc*
 
 
 info "Exporting bin to PATH"
-mkdir -p $BUILD_DIR/.profile.d
+mkdir -p $(dirname $PANDOC_PROFILE_SCRIPT_PATH)
 echo "export PATH=\"\$HOME/$PANDOC_ROOT/usr/bin:\$PATH\"" > $PANDOC_PROFILE_SCRIPT_PATH
 
 
